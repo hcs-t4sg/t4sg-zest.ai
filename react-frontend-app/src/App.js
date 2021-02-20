@@ -26,7 +26,7 @@ function App() {
         >
           Learn React
         </a>
-        <p>Message: {placeholder}</p>
+        <p>Hello I'm Chris: {placeholder}</p>
       </header>
     </div>
   );
