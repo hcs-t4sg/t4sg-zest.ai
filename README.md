@@ -37,6 +37,6 @@ From the root directory, enter the following command:
 
 ```flask run```
 
-From react-flask-app, enter the following command:
+From react-frontend-app, enter the following command:
 
 ```npm start```
