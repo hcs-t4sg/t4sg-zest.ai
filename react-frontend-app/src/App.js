@@ -6,7 +6,7 @@ function App() {
   const [placeholder, setPlaceholder] = useState("This is the default React message");
 
   useEffect(() => {
-    fetch('/hello').then(res => res.json()).then(data => {
+    fetch('http://localhost:5000/hello').then(res => res.json()).then(data => {
       setPlaceholder(data.result);
     });
   }, []);
