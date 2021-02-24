@@ -6,7 +6,6 @@ WORKDIR /code
 
 # set environment variables
 ENV FLASK_APP=src/app.py
-ENV FLASK_ENV=development
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
