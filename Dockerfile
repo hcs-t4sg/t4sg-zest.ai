@@ -4,6 +4,16 @@ FROM python:3.7-alpine
 # set the working director in the container
 WORKDIR /code
 
+# sets the location of the virtual env environment variable
+ENV VIRTUAL_ENV=/opt/venv
+
+# creates virtual environment at location defined by VIRTUAL_ENV environment variable
+RUN python3 -m venv $VIRTUAL_ENV
+
+# adds the virtualenv's bin directory to the start of PATH
+# functionally equivalent to "activating" virtualenv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 # set environment variables
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
