@@ -29,9 +29,11 @@ CORS(app)
 def api_post():
     if request.method == 'POST':
         req = request.json
-        newstring = req["name"] + req["zipcode"]
-        req["name"] = newstring
-        print(req["name"])
+        print("this is req:")
+        print(req)
+        # newstring = req["name"] + req["zipcode"]
+        # req["name"] = newstring
+        # print(req["name"])
         return jsonify(name=req)
     if request.method == 'GET':
         return {

@@ -12,14 +12,15 @@ function App() {
     });
   }, []);
 
-  const [value, setValue] = useState('');
-  const [zip, setZip] = useState('zip default');
+  const [name, setName] = useState('');
+  const [zip, setZip] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
-    const data = { name: value, zipcode: zip };
+    const data = { name: name, zipcode: zip };
     console.log('submitted value:');
     console.log(value);
+    console.log(zip);
     fetch('http://127.0.0.1:5000/test/', {
       method: 'POST',
       // mode: 'no-cors',
@@ -32,17 +33,18 @@ function App() {
       .then(res => {
         console.log("this is test res: ");
         console.log(res);
-        setValue(res.name.name);
-        setZip(res.name.name);
+        // setValue(res.name.name);
+        // setZip(res.zipcode.zipcode);
       });
   }
 
-  function handleValue(e) {
-    setValue(e.target.value);
+  function handleName(e) {
+    setName(e.target.value);
   }
 
-  function handleValue2(e) {
-    setZip(e.target.zip);
+  function handleZip(e) {
+    console.log("successfully called handleZip");
+    setZip(e.target.value);
   }
 
   return (
@@ -62,17 +64,18 @@ function App() {
       <br/>
       <h2>communication w backend from starter project:</h2>
       <br/>
+      <form>
       <form action="" onSubmit={handleSubmit}>
           <h3>Surname:</h3>
-          <input type="text" onChange={handleValue}/>
+          <input type="text" value={name} onChange={handleName}/>
           <h3>Zipcode:</h3>
-          <input type="text" onChange={handleValue2}/>
+          <input type="text" value={zip} onChange={handleZip}/>
           <br/>
           <br/>
-        {/* <input type="text" onChange={handleValue} /> */}
         <button> submit </button>
       </form>
-      <p>the word is: {value}</p>
+      <p>the value is: {name}</p>
+      <p>the zip is: {zip}</p>
 
     </div>
   );
