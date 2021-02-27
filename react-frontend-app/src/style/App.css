@@ -1,11 +1,3 @@
-/* TO-DO: AUSTIN
-
-Here you should add CSS classes and ids in order to style the general front-end of the React app.
-
-If you want to style other components, you should make more .css files under the react-front-end/src/style/ folder and import them.
-
-*/
-
 .App {
   text-align: center;
 }
@@ -45,4 +37,10 @@ If you want to style other components, you should make more .css files under the
   }
 }
 
-/* END TO-DO: AUSTIN */
+/* TO-DO: AUSTIN
+
+Here you should add CSS classes and ids in order to style the general front-end of the React app.
+
+If you want to make 
+
+*/
