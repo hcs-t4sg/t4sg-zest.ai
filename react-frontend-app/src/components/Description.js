@@ -6,8 +6,6 @@ import '../style/Description.css';
 class Description extends React.Component {
     constructor(props) {
         super(props)
-        // You should store stateful data here
-        this.state = {}
     }
 
     render () {
