@@ -19,7 +19,7 @@ function App() {
     e.preventDefault();
     const data = { name: name, zipcode: zip };
     console.log('submitted value:');
-    console.log(value);
+    console.log(name);
     console.log(zip);
     fetch('http://127.0.0.1:5000/test/', {
       method: 'POST',
@@ -64,7 +64,6 @@ function App() {
       <br/>
       <h2>communication w backend from starter project:</h2>
       <br/>
-      <form>
       <form action="" onSubmit={handleSubmit}>
           <h3>Surname:</h3>
           <input type="text" value={name} onChange={handleName}/>
