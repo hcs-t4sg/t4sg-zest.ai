@@ -27,10 +27,6 @@ def run_surgeo():
     sg = surgeo.SurgeoModel()
     sg_results = sg.get_probabilities(surname_series, zip_series)
 
-    # print for debugging
-    # print("these are the surgeo model results: ")
-    # print(sg_results)
-
     sg_json = pd.DataFrame.to_json(sg_results)
     return(sg_json)
 
