@@ -1,5 +1,7 @@
 # Zest.ai Web Development Deliverable #
 
+First, download the latest version of Docker and Docker-Compose from: https://docs.docker.com/compose/
+
 To run both the front-end React app and the Python flask server, execute the following command:
 
 `docker-compose up`
