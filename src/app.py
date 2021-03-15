@@ -22,7 +22,7 @@ def run_surgeo():
     surname = request.args.get('surname')
     zipcode = request.args.get('zipcode')
     surname_series = pd.Series([surname])
-    zip_series = pd.Series([zipcode]) 
+    zip_series = pd.Series([zipcode])
 
     sg = surgeo.SurgeoModel()
     sg_results = sg.get_probabilities(surname_series, zip_series)

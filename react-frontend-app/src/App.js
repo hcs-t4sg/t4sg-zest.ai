@@ -38,9 +38,6 @@ function App() {
 
     axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
       .then(res => console.log(res.data));
-
-    // axios.get(`/surgeo?surname=${surname}&zipcode=${zipcode}`)
-    //   .then(res => console.log(res));
   }
 
   return (
@@ -51,7 +48,7 @@ function App() {
       <br/><br/><br/><br/><br/>
       <h1>Zest AI Race Predictor Prototype</h1>
       <br/>
-      <form action="" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>Please enter your information:</label>
         <br/><br/>
         Surname: <input type="text" onChange={handleSurname}/>
