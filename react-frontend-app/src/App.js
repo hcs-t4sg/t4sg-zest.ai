@@ -12,6 +12,7 @@ import Description from './components/Description'
 import Display from './components/Display'
 import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
+import BarGraph from './components/BarGraph'
 
 class App extends React.Component {
   constructor(props) {
@@ -61,6 +62,8 @@ class App extends React.Component {
             </label>
             <input type="submit" value="Submit" />
         </form>
+
+        <BarGraph />
 
         <Display />
 

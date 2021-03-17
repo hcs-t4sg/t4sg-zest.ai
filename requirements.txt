@@ -3,3 +3,4 @@ Flask-Cors==3.0.10
 numpy==1.18.1            
 pandas==1.0.3
 surgeo==1.1.0
+d3==0.1.0
