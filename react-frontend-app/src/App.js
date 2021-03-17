@@ -11,7 +11,6 @@ import logo from './logo.svg';
 import './style/App.css';
 
 // Import different components
-import Description from './components/Description'
 import Display from './components/Display'
 import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
@@ -42,9 +41,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* Still in progress */}
-      {/* <MainNavBar /> */}
-      {/* <Description /> */}
+      <MainNavBar />
       <br/><br/><br/><br/><br/>
       <h1>Zest AI Race Predictor Prototype</h1>
       <br/>
@@ -64,7 +61,7 @@ function App() {
 
       {/* Also in progress */}
       {/* <Display /> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
