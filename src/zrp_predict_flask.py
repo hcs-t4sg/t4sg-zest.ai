@@ -61,7 +61,7 @@ class Basic_PreProcessor():
         return(data_fl_co_all_sample_clean)
 
 
-class ZRPFeatureEngineering():
+class zrp_feature_engineering():
     '''This class is used to execute general ZRP feature engineering.''' 
     
     def __init__(self):
