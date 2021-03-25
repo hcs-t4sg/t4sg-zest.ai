@@ -5,7 +5,6 @@ from flask_cors import CORS
 import pandas as pd 
 import surgeo
 import pickle
-#import zrp_predict
 import json
 
 import warnings
