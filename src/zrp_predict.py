@@ -8,6 +8,7 @@ from sklearn.preprocessing import MultiLabelBinarizer, OrdinalEncoder
 from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
 import zrp_feature_engineering
+
 class Basic_PreProcessor():
     '''This class is used to execute general ZRP preprocessing. This is an example class requiring access to the proxy_fe.py script & functions. 
     ''' 
