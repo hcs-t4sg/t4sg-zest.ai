@@ -42,12 +42,11 @@ function App() {
 
   return (
     <div className="App">
-      {/* Still in progress */}
-      {/* <MainNavBar /> */}
-      {/* <Description /> */}
+      <MainNavBar />
       <br/><br/><br/><br/><br/>
       <h1>Zest AI Race Predictor Prototype</h1>
       <br/>
+      <Description />
       <form onSubmit={handleSubmit}>
         <label>Please enter your information:</label>
         <br/><br/>
@@ -64,7 +63,7 @@ function App() {
 
       {/* Also in progress */}
       {/* <Display /> */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
