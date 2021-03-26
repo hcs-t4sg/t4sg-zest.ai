@@ -1,5 +1,5 @@
 // import all packages
-import reportWebVitals from "./reportWebVitals.js";
+import reportWebVitals from "./../reportWebVitals.js";
 import React, { Component } from "react";
 import { max, descending, schemeCategory10, version, schemePastel1 } from "d3";
 import { scaleOrdinal, scaleLinear } from "d3-scale";
@@ -7,7 +7,7 @@ import { axisLeft, axisTop } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { format } from "d3-format";
 import { transition } from "d3-transition";
-import './App.css';
+import '../style/App.css';
 
 // import axios from "axios";
 // goal is to pass in data from the api call (currently, this is dummy data)
