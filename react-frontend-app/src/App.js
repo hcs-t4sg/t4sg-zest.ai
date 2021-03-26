@@ -60,7 +60,7 @@ function App() {
       </form>
       <br/>
       <div>
-        {/* <h3>Breakdown</h3> */}
+        <h3>Breakdown</h3>
         <BarGraph />
       </div>
 
