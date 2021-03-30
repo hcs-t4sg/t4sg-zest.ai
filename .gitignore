@@ -1,6 +1,6 @@
 .DS_Store
 .env
-
+./picklefiles/
 .vscode/
 __pycache__
 venv

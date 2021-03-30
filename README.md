@@ -21,3 +21,23 @@ Alternatively, you can both build and launch the containers in one command:
 More information on how to use docker commands can be found on the Docker website: https://docs.docker.com/compose/reference/overview/ 
 
 Note: this containerization is configured for development only. We still need to write some build files for the production build.
+
+## ZRP Endpoint ##
+
+Picklefiles:
+    - need the "zrp_fe_pkl.obj" and "clf_fl.obj" picklefiles in the picklefiles/ directory to run predictions
+
+Required Parameters:
+    - first name
+    - last name
+    - middle name
+    - zipcode
+    - precinct split
+    - gender
+    - county code
+    - congressional district
+    - senate district
+    - house district
+    - birth date
+
+The goal is to eventually reduce the number of required fields needed to run predictions (perhaps calling a census API that can retrieve the required parameters). 
