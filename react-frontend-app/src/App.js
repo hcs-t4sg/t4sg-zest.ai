@@ -15,6 +15,7 @@ import Description from './components/Description'
 import Display from './components/Display'
 import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
+import BarGraph from './components/BarGraph'
 
 function App() {
   const [surname, setSurname] = useState('');
@@ -59,6 +60,7 @@ function App() {
       <br/>
       <div>
         <h3>Breakdown</h3>
+        <BarGraph />
       </div>
 
       {/* Also in progress */}
