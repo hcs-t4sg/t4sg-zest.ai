@@ -1,23 +1,27 @@
 import React from 'react';
 import '../style/MainNavBar.css';
 
-// TO-DO: AUSTIN(?)
-
-class MainNavBar extends React.Component {
-    constructor(props) {
-        super(props)
-        // You should store stateful data here
-        this.state = {}
-    }
-
-    render () {
-        return (
-            <div>
-                <p>I am the Zest Navigation Bar (purely cosmetic until we have multiple pages). I'm very sad b/c I have no code here yet</p>
-            </div>
-        )
-    }
+function MainNavBar() {
+    return (
+        <div className="container">
+            <nav>
+                <input type="checkbox" id="nav" className="hidden"/>
+                <label htmlFor="nav" className="nav-btn">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </label>
+                <div className="logo">
+                    <a href="#">Zest.ai</a>
+                </div>
+                <div className="nav-wrapper">
+                    <ul>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    )
 }
-
 
 export default MainNavBar;

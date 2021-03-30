@@ -1,5 +1,6 @@
 from flask import Flask, request, session, jsonify, redirect, render_template
 from flask_cors import CORS
+import time
 
 # Needed for surgeo route
 import pandas as pd 
@@ -27,17 +28,16 @@ CORS(app)
 def say_hello_world():
     return {'result': "Flask says Hello World"}
 
-@app.route('/surgeo', methods=["GET"])
+@app.route('/surgeo', methods=["GET", "POST"])
 def run_surgeo():
     # TO-DO: @KAYLA
     # Build out a public facing API that responds to a get request with the surname and zip code as query arguments. 
     # The API should return the probabilities of each race prediction as a JSON object.
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}
-
     surname = request.args.get('surname')
     zipcode = request.args.get('zipcode')
     surname_series = pd.Series([surname])
-    zip_series = pd.Series([zipcode]) 
+    zip_series = pd.Series([zipcode])
 
     sg = surgeo.SurgeoModel()
     sg_results = sg.get_probabilities(surname_series, zip_series)
