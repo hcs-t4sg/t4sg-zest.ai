@@ -7,7 +7,6 @@ import os, re, sys
 from sklearn.preprocessing import MultiLabelBinarizer, OrdinalEncoder
 from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
-import zrp_feature_engineering
 
 class Basic_PreProcessor():
     '''This class is used to execute general ZRP preprocessing. This is an example class requiring access to the proxy_fe.py script & functions. 
@@ -18,9 +17,9 @@ class Basic_PreProcessor():
     def fit(self):
         pass
     def transform(self, data):
-        from proxy_fe import fl_address_clean
-        from proxy_fe import lower_case
-        from proxy_fe import handle_compounds
+        from utils.proxy_fe import fl_address_clean
+        from utils.proxy_fe import lower_case
+        from utils.proxy_fe import handle_compounds
         
 #         # create id
 #         data["applicant_id"] =  data.index

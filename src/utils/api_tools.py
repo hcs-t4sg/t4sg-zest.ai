@@ -1,9 +1,9 @@
-import pandas as pd
-import surgeo
 import json
 
-import zrp_predict
-from zrp_predict import zrp_feature_engineering, Basic_PreProcessor
+import pandas as pd
+import surgeo
+
+import utils.zrp_predict as zrp_predict
 
 def run_surgeo(surname, zipcode):
     # Returns the probabilities of each race prediction as a JSON object.

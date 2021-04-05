@@ -18,8 +18,7 @@ from sklearn.preprocessing import MultiLabelBinarizer, OrdinalEncoder
 from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
 
-import utils.zrp_predict
-from utils.zrp_predict import zrp_feature_engineering, Basic_PreProcessor
+from utils.zrp_predict import Basic_PreProcessor
 from utils.api_tools import run_surgeo, zrp
 
 app = Flask(__name__)
