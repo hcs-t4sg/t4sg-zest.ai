@@ -28,14 +28,9 @@ CORS(app)
 def say_hello_world():
     return {'result': "Flask says Hello World"}
 
-@app.route('/surgeo', methods=["GET", "POST"])
-def run_surgeo():
-    # TO-DO: @KAYLA
-    # Build out a public facing API that responds to a get request with the surname and zip code as query arguments. 
-    # The API should return the probabilities of each race prediction as a JSON object.
+def run_surgeo(surname, zipcode):
+    # Returns the probabilities of each race prediction as a JSON object.
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}
-    surname = request.args.get('surname')
-    zipcode = request.args.get('zipcode')
     surname_series = pd.Series([surname])
     zip_series = pd.Series([zipcode])
 
@@ -45,33 +40,12 @@ def run_surgeo():
     sg_json = pd.DataFrame.to_json(sg_results)
     return(sg_json)
 
-    # END OF SURGEO API; END OF TO-DO @KAYLA
-
-@app.route('/zrp', methods=["GET"])
-def zrp():
-    # TO-DO: @RAKESH
-    # Build out a public facing API that responds to a get request with the full name, address, age, and gender as a query arguments. 
-    # The API should return the probabilities of each race prediction as a JSON object.
+def zrp(zipcode, last_name, first_name, middle_name, precinct_split, gender, 
+        county_code, congressional_district, senate_district, house_district, birth_date):
+    # Returns the probabilities of each race prediction as a JSON object.
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}
-    # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 'County_Code','Congressional_District', 'Senate_District', 'House_District', 'Birth_Date'
-
-    # As part of this, you should add any relevant pickle files that you might want to call to the directory "picklefiles".
-    # These files will be stored on the server and your API will be able to call them in order to make predictions.
-    # Currently, there's just one file in the picklefiles folder: the pickled Florida predictor that was sent over by Kasey, but feel free to add more.
-    # Also, if you're having trouble accessing a picklefile in the picklefiles folder, DM Chris. It may be a problem with how the Dockerfile is set up
-    # and how it copies the picklefile folder over to the container.
-
-    zipcode = request.args.get('zipcode')
-    last_name = request.args.get('last_name')
-    first_name = request.args.get('first_name')
-    middle_name = request.args.get('middle_name')
-    precinct_split = request.args.get('precinct_split')
-    gender = request.args.get('gender')
-    county_code = request.args.get('county_code')
-    congressional_district = request.args.get('congressional_district')
-    senate_district = request.args.get('senate_district')
-    house_district = request.args.get('house_district')
-    birth_date = request.args.get('birth_date')
+    # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 
+    # 'County_Code','Congressional_District', 'Senate_District', 'House_District', 'Birth_Date'
 
     data = {'Name_First': [str(first_name)], 
             'Name_Last': [str(last_name)],
@@ -99,6 +73,42 @@ def zrp():
 
     json_preds = json.dumps(preds_data)
     return json_preds
-    
-    # END OF ZRP API; END OF TO-DO @RAKESH
 
+@app.route('/surgeo', methods=["GET", "POST"])
+def internal_surgeo():
+    # API for internal use and testing only; will be deprecated in the future
+    # Required fields: 'surname', 'zipcode'
+
+    surname = request.args.get('surname')
+    zipcode = request.args.get('zipcode')
+    return run_surgeo(surname=surname, 
+                      zipcode=zipcode)
+
+@app.route('/zrp', methods=["GET"])
+def internal_zrp():
+    # API for internal use and testing only; will be deprecated in the future
+    # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 
+    # 'County_Code','Congressional_District', 'Senate_District', 'House_District', 'Birth_Date'
+
+    zipcode = request.args.get('zipcode')
+    last_name = request.args.get('last_name')
+    first_name = request.args.get('first_name')
+    middle_name = request.args.get('middle_name')
+    precinct_split = request.args.get('precinct_split')
+    gender = request.args.get('gender')
+    county_code = request.args.get('county_code')
+    congressional_district = request.args.get('congressional_district')
+    senate_district = request.args.get('senate_district')
+    house_district = request.args.get('house_district')
+    birth_date = request.args.get('birth_date')
+    return zrp(zipcode=zipcode,
+               last_name=last_name,
+               first_name=first_name,
+               middle_name=middle_name,
+               precinct_split=precinct_split,
+               gender=gender,
+               county_code=county_code,
+               congressional_district=congressional_district,
+               senate_district=senate_district,
+               house_district=house_district,
+               birth_date=birth_date)
