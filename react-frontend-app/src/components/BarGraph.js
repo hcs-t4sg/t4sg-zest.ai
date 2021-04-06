@@ -10,7 +10,7 @@ import { transition } from "d3-transition";
 import '../style/BarGraph.css';
 
 // import axios from "axios";
-// goal is to pass in data from the api call (currently, this is dummy data)
+// dummy data
 var data = {
     "white": {
         "bisg": "0.6700283648",
