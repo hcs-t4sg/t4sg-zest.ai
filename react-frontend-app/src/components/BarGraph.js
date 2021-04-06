@@ -7,7 +7,7 @@ import { axisLeft, axisTop } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { format } from "d3-format";
 import { transition } from "d3-transition";
-import '../style/App.css';
+import '../style/BarGraph.css';
 
 // import axios from "axios";
 // goal is to pass in data from the api call (currently, this is dummy data)

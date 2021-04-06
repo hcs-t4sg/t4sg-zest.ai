@@ -12,7 +12,6 @@ import './style/App.css';
 
 // Import different components
 import Description from './components/Description'
-import Display from './components/Display'
 import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
 import BarGraph from './components/BarGraph'
