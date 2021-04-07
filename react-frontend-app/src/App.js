@@ -20,6 +20,7 @@ function App() {
   const [surname, setSurname] = useState('');
   const [zipcode, setZip] = useState('');
   var prediction = {};
+  var testProps = 'information passed from App function in App.js';
 
   // Functions that are called whenever the text input is changed
   function handleSurname(event) {
@@ -37,7 +38,10 @@ function App() {
     console.log({surname}, {zipcode});
 
     axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
-      .then(res => console.log(res.data));
+      .then(res => testProps = res.data );
+
+    console.log("testProps print: ");
+    console.log(testProps);
   }
 
   return (
@@ -59,7 +63,8 @@ function App() {
       <br/>
       <div>
         <h3>Breakdown</h3>
-        <BarGraph />
+        <BarGraph testProps={testProps}/>
+        {/* <BarGraph /> */}
       </div>
 
       {/* Also in progress */}

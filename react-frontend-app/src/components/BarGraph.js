@@ -9,7 +9,8 @@ import { format } from "d3-format";
 import { transition } from "d3-transition";
 import '../style/BarGraph.css';
 
-// import axios from "axios";
+import axios from "axios";
+
 // dummy data
 var data = {
     "white": {
@@ -59,19 +60,22 @@ class BarGraph extends React.Component {
     constructor(props) {
         super(props);
         this.createBar = this.createBar.bind(this);
+        this.state = { testVar: this.props.testProps };
+
     }
 
     async componentDidMount() {
-        // const res = await axios.get('http://0.0.0.0:5000/surgeo');
-        // const data = await res.json();
         this.createBar(data);
     }
 
     componentDidUpdate() {
         this.createBar(data);
+        console.log("componentDidUpdate function called");
     }
 
     createBar(data) {
+        console.log("this.state.testVar: ");
+        console.log(this.state.testVar);
 
         var chartWidth       = 300,
             barHeight        = 20,
@@ -93,6 +97,8 @@ class BarGraph extends React.Component {
         var height = width;
         var color = d3.scaleOrdinal(d3.schemePastel1);
         var chartHeight = barHeight * 12 + gapBetweenGroups * 6;
+
+        d3.select("body").select("svg").remove();
 
         var svg = d3
             .select("body")
@@ -255,7 +261,8 @@ class BarGraph extends React.Component {
 
     }
     render() {
-        return "";
+        return '';
+        // return <h1>{this.props.testProps}</h1>;
     }
 }
 
