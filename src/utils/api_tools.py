@@ -5,7 +5,7 @@ import surgeo
 
 import utils.zrp_predict as zrp_predict
 
-def run_surgeo(surname, zipcode):
+def surgeo_helper(surname, zipcode):
     # Returns the probabilities of each race prediction as a JSON object.
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}
     surname_series = pd.Series([surname])
@@ -17,7 +17,7 @@ def run_surgeo(surname, zipcode):
     sg_json = pd.DataFrame.to_json(sg_results)
     return(sg_json)
 
-def zrp(zipcode, last_name, first_name, middle_name, precinct_split, gender, 
+def zrp_helper(zipcode, last_name, first_name, middle_name, precinct_split, gender, 
         county_code, congressional_district, senate_district, house_district, birth_date):
     # Returns the probabilities of each race prediction as a JSON object.
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}

@@ -19,7 +19,7 @@ from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
 
 from utils.zrp_predict import Basic_PreProcessor
-from utils.api_tools import run_surgeo, zrp
+from utils.api_tools import surgeo_helper, zrp_helper
 
 app = Flask(__name__)
 CORS(app)
@@ -36,7 +36,7 @@ def internal_surgeo():
     surname = request.args.get('surname')
     zipcode = request.args.get('zipcode')
 
-    return run_surgeo(surname=surname, 
+    return surgeo_helper(surname=surname, 
                       zipcode=zipcode)
 
 @app.route('/zrp', methods=["GET"])
@@ -57,7 +57,7 @@ def internal_zrp():
     house_district = request.args.get('house_district')
     birth_date = request.args.get('birth_date')
 
-    return zrp(zipcode=zipcode,
+    return zrp_helper(zipcode=zipcode,
                last_name=last_name,
                first_name=first_name,
                middle_name=middle_name,
