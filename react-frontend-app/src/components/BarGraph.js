@@ -9,8 +9,6 @@ import { format } from "d3-format";
 import { transition } from "d3-transition";
 import '../style/BarGraph.css';
 
-import axios from "axios";
-
 // dummy data
 var data = {
     "white": {
@@ -112,7 +110,6 @@ class BarGraph extends React.Component {
 
 
         var x = d3.scaleLinear()
-            // .domain([0, d3.max(zippedData)])
             .domain([0,1])
             .range([0, chartWidth]);
 
@@ -124,7 +121,7 @@ class BarGraph extends React.Component {
             .tickSize(0);
 
         // Specify the chart area and dimensions
-        var chart = svg.selectAll("g") //d3.select(".chart-area") // ".chart"
+        var chart = svg.selectAll("g")
             .attr("width", spaceForLabels + chartWidth + spaceForLegend)
             .attr("height", chartHeight);
 
@@ -261,8 +258,8 @@ class BarGraph extends React.Component {
 
     }
     render() {
-        return '';
-        // return <h1>{this.props.testProps}</h1>;
+        // return '';
+        return <h1>{this.state.testVar}</h1>;
     }
 }
 

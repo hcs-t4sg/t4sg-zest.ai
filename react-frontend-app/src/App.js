@@ -20,6 +20,7 @@ function App() {
   const [surname, setSurname] = useState('');
   const [zipcode, setZip] = useState('');
   var prediction = {};
+  var [variable, setVariable] = useState('this is the default variable');
   var testProps = 'information passed from App function in App.js';
 
   // Functions that are called whenever the text input is changed
@@ -35,13 +36,16 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log('Submit was pressed');
-    console.log({surname}, {zipcode});
+    console.log({surname}, {zipcode}, {variable});
 
     axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
       .then(res => testProps = res.data );
 
     console.log("testProps print: ");
     console.log(testProps);
+    setVariable(testProps);
+    console.log("variable print: ");
+    console.log({variable});
   }
 
   return (
@@ -63,7 +67,7 @@ function App() {
       <br/>
       <div>
         <h3>Breakdown</h3>
-        <BarGraph testProps={testProps}/>
+        <BarGraph testProps={variable}/>
         {/* <BarGraph /> */}
       </div>
 
