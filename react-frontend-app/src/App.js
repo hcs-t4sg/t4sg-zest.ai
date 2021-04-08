@@ -19,9 +19,11 @@ import BarGraph from './components/BarGraph'
 function App() {
   const [surname, setSurname] = useState('');
   const [zipcode, setZip] = useState('');
-  var prediction = {};
+  const [loading, setLoading] = useState(true);
+
+  // var prediction = {};
   var [variable, setVariable] = useState('this is the default variable');
-  var testProps = 'information passed from App function in App.js';
+  // var testProps = 'information passed from App function in App.js';
 
   // Functions that are called whenever the text input is changed
   function handleSurname(event) {
@@ -33,49 +35,85 @@ function App() {
   }
 
   // Function that called when the submit button is pressed
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log('Submit was pressed');
-    console.log({surname}, {zipcode}, {variable});
 
-    axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
-      .then(res => testProps = res.data );
-
-    console.log("testProps print: ");
-    console.log(testProps);
-    setVariable(testProps);
-    console.log("variable print: ");
-    console.log({variable});
+    setVariable(await axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
+      .then(res => {
+        setVariable(res.data);
+        return res.data;
+      }));
+    setLoading(false);
   }
 
-  return (
-    <div className="App">
-      <MainNavBar />
-      <br/><br/><br/><br/><br/>
-      <h1>Zest AI Race Predictor Prototype</h1>
-      <br/>
-      <Description />
-      <form onSubmit={handleSubmit}>
-        <label>Please enter your information:</label>
-        <br/><br/>
-        Surname: <input type="text" onChange={handleSurname}/>
-        <br/><br/>
-        Zip code: <input type="text" onChange={handleZip}/>
-        <br/><br/>
-        <Button type="submit" value="Submit">submit</Button>
-      </form>
-      <br/>
-      <div>
-        <h3>Breakdown</h3>
-        <BarGraph testProps={variable}/>
-        {/* <BarGraph /> */}
-      </div>
+  if (variable == "this is the default variable" || loading) {
+    return (
+      <div className="App">
+        <MainNavBar />
+        <br /><br /><br /><br /><br />
+        <h1>Zest AI Race Predictor Prototype</h1>
+        <br />
+        <Description />
+        <form onSubmit={handleSubmit}>
+          <label>Please enter your information:</label>
+          <br /><br />
+          Surname: <input type="text" onChange={handleSurname} />
+          <br /><br />
+          Zip code: <input type="text" onChange={handleZip} />
+          <br /><br />
+          <Button type="submit" value="Submit">submit</Button>
+        </form>
+        <br />
+        <div>
+          Nothing here, submit your data!
+        </div>
 
-      {/* Also in progress */}
-      {/* <Display /> */}
-      <Footer />
-    </div>
-  );
+        {/* Also in progress */}
+        {/* <Display /> */}
+        <Footer />
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className="App">
+        <MainNavBar />
+        <br /><br /><br /><br /><br />
+        <h1>Zest AI Race Predictor Prototype</h1>
+        <br />
+        <Description />
+        <form onSubmit={handleSubmit}>
+          <label>Please enter your information:</label>
+          <br /><br />
+          Surname: <input type="text" onChange={handleSurname} />
+          <br /><br />
+          Zip code: <input type="text" onChange={handleZip} />
+          <br /><br />
+          <Button type="submit" value="Submit">submit</Button>
+        </form>
+        <br />
+        <div>
+          <h3>Breakdown</h3>
+          {/* <BarGraph testProps={variable} /> */}
+          <BarGraph
+            // zcta={variable.zcta[0]}
+            // name={variable.name[0]}
+            white={variable.white[0]}
+            black={variable.black[0]}
+            api={variable.api[0]}
+            hispanic={variable.hispanic[0]}
+            multiple={variable.multiple[0]}
+            native={variable.native[0]}
+          />
+          {/* <BarGraph /> */}
+        </div>
+
+        {/* Also in progress */}
+        {/* <Display /> */}
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;
