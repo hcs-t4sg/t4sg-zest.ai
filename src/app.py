@@ -22,7 +22,7 @@ from utils.zrp_predict import Basic_PreProcessor
 from utils.api_tools import surgeo_helper, zrp_helper
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/surgeo/*": {"origins": "*"}, r"/zrp/*": {"origins": "*"}})
 
 @app.route('/hello')
 def say_hello_world():
