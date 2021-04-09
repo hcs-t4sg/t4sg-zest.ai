@@ -73,12 +73,11 @@ function App() {
     console.log('Submit was pressed');
     var promise = new Promise((resolve) => {
         axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
-        .then(res => console.log(res.data))
-        .then(axios.get(`http://localhost:5000/zrp?zipcode=${zipcode}&first_name=${firstName}&last_name=${surname}&middle_name=${midName}&precinct_split=${precinct}&gender=${gender}&county_code=${county}&congressional_district=${cong}&house_district=${house}&birth_date=${birth}&senate_district=${senate}`))
-        .then(res => console.log(res))
+        .then(res => console.log(res.data));
+        axios.get(`http://localhost:5000/zrp?zipcode=${zipcode}&first_name=${firstName}&last_name=${surname}&middle_name=${midName}&precinct_split=${precinct}&gender=${gender}&county_code=${county}&congressional_district=${cong}&house_district=${house}&birth_date=${birth}&senate_district=${senate}`)
+        .then(res => console.log(res.data));
       resolve(true)
-    }
-    );
+    });
     // promise.then(
     //   axios.get(`http://localhost:5000/zrp?zipcode=${zipcode}&first_name=${firstName}&last_name=${surname}&middle_name=${midName}&precinct_split=${precinct}&gender=${gender}&county_code=${county}}&congressional_district=${cong}&house_district=${house}&birth_date=${birth}&senate_district=${senate}`)
     //   .then(res => console.log(res))
