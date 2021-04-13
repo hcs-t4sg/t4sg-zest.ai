@@ -21,9 +21,8 @@ function App() {
   const [zipcode, setZip] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // var prediction = {};
-  var [variable, setVariable] = useState('this is the default variable');
-  // var testProps = 'information passed from App function in App.js';
+  // bisgData stores probabilities from bisg
+  var [bisgData, setbisgData] = useState('default bisg');
 
   // Functions that are called whenever the text input is changed
   function handleSurname(event) {
@@ -38,82 +37,40 @@ function App() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    setVariable(await axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
+    await axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
       .then(res => {
-        setVariable(res.data);
-        return res.data;
-      }));
+        setbisgData(res.data);
+        console.log("axios retrieved: ");
+        console.log(res.data);
+        console.log(bisgData);
+      });
     setLoading(false);
   }
 
-  if (variable == "this is the default variable" || loading) {
-    return (
-      <div className="App">
-        <MainNavBar />
-        <br /><br /><br /><br /><br />
-        <h1>Zest AI Race Predictor Prototype</h1>
-        <br />
-        <Description />
-        <form onSubmit={handleSubmit}>
-          <label>Please enter your information:</label>
-          <br /><br />
-          Surname: <input type="text" onChange={handleSurname} />
-          <br /><br />
-          Zip code: <input type="text" onChange={handleZip} />
-          <br /><br />
-          <Button type="submit" value="Submit">submit</Button>
-        </form>
-        <br />
-        <div>
-          Nothing here, submit your data!
-        </div>
-
-        {/* Also in progress */}
-        {/* <Display /> */}
-        <Footer />
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className="App">
-        <MainNavBar />
-        <br /><br /><br /><br /><br />
-        <h1>Zest AI Race Predictor Prototype</h1>
-        <br />
-        <Description />
-        <form onSubmit={handleSubmit}>
-          <label>Please enter your information:</label>
-          <br /><br />
-          Surname: <input type="text" onChange={handleSurname} />
-          <br /><br />
-          Zip code: <input type="text" onChange={handleZip} />
-          <br /><br />
-          <Button type="submit" value="Submit">submit</Button>
-        </form>
-        <br />
-        <div>
-          <h3>Breakdown</h3>
-          {/* <BarGraph testProps={variable} /> */}
-          <BarGraph
-            // zcta={variable.zcta[0]}
-            // name={variable.name[0]}
-            white={variable.white[0]}
-            black={variable.black[0]}
-            api={variable.api[0]}
-            hispanic={variable.hispanic[0]}
-            multiple={variable.multiple[0]}
-            native={variable.native[0]}
-          />
-          {/* <BarGraph /> */}
-        </div>
-
-        {/* Also in progress */}
-        {/* <Display /> */}
-        <Footer />
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <MainNavBar />
+      <br /><br /><br /><br /><br />
+      <h1>Zest AI Race Predictor Prototype</h1>
+      <br />
+      <Description />
+      <form onSubmit={handleSubmit}>
+        <label>Please enter your information:</label>
+        <br /><br />
+        Surname: <input type="text" onChange={handleSurname} />
+        <br /><br />
+        Zip code: <input type="text" onChange={handleZip} />
+        <br /><br />
+        <Button type="submit" value="Submit">submit</Button>
+      </form>
+      <br />
+      { (bisgData == "default bisg" || loading) 
+        ? <div> <h3>Nothing here, submit your data!</h3> </div>
+        : <div><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
+      }
+      <Footer />
+    </div>
+  );
 }
 
 export default App;

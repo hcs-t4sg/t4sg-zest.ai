@@ -59,8 +59,6 @@ class BarGraph extends React.Component {
         super(props);
         this.createBar = this.createBar.bind(this);
         this.state = {
-            // zcta5: this.props.zcta5,
-            // name: this.props.name,
             white: this.props.white,
             black: this.props.black,
             native: this.props.native,
@@ -282,8 +280,7 @@ class BarGraph extends React.Component {
 
     }
     render() {
-        // return '';
-        return <h1>{this.state.api}</h1>;           //Put this as a placeholder, unsure what makes the most sense! 
+        return '';
     }
 }
 
