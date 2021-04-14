@@ -73,6 +73,14 @@ class BarGraph extends React.Component {
     }
 
     componentDidUpdate() {
+        this.state = {
+            white: this.props.white,
+            black: this.props.black,
+            native: this.props.native,
+            multiple: this.props.multiple,
+            hispanic: this.props.hispanic,
+            api: this.props.api
+        };
         this.createBar(data);
         // console.log("componentDidUpdate function called");
     }
@@ -119,16 +127,16 @@ class BarGraph extends React.Component {
         var color = d3.scaleOrdinal(d3.schemePastel1);
         var chartHeight = barHeight * 12 + gapBetweenGroups * 6;
 
-        d3.select("body").select("svg").remove();
+        d3.select(".svg-class").select("svg").remove();
 
         var svg = d3
-            .select("body")
+            .select(".svg-class")
             .append("svg")
             .attr("id", "chart-area")
             .style("width", width + 'px')
             .style("height", height + 'px')
-            .attr("transform", "translate(" + (width / 2 - 10) + "," + 10 + ")")
-            .attr("viewBox", [-50, 0, width + 50, chartHeight])
+            // .attr("transform", "translate(" + (width / 2 - 10) + "," + 10 + ")")
+            .attr("viewBox", [0, 0, width + 20, chartHeight * 5 /3])
             .append("g");
 
         var x = d3.scaleLinear()

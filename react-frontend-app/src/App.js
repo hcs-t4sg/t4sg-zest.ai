@@ -66,7 +66,7 @@ function App() {
       <br />
       { (bisgData == "default bisg" || loading) 
         ? <div> <h3>Nothing here, submit your data!</h3> </div>
-        : <div><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
+        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
       }
       <Footer />
     </div>
