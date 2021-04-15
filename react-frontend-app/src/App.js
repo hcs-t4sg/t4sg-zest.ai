@@ -18,62 +18,31 @@ import MainNavBar from './components/MainNavBar'
 import BarGraph from './components/BarGraph'
 
 function App() {
-  const [surname, setSurname] = useState('');
-  const [zipcode, setZip] = useState('');
-
-  // ZRP inputs
-  const [firstName, setFirst] = useState('');
-  const [midName, setMid] = useState('');
-  const [precinct, setPrecinct] = useState('');
-  const [gender, setGender] = useState('');
-  const [county, setCounty] = useState('');
-  const [cong, setCong] = useState('');
-  const [senate, setSenate] = useState('');
-  const [house, setHouse] = useState('');
-  const [birth, setBirth] = useState('');
+  const [allValues, setAllValues] = useState({
+    zipcode: '',
+    last_name: '',
+    first_name: '',
+    middle_name: '',
+    precinct_split: '',
+    gender: '',
+    county_code: '',
+    congressional_district: '',
+    senate_district: '',
+    house_district: '',
+    birth_date: ''
+  });
 
   // Functions that are called whenever the text input is changed
-  function handleSurname(event) {
-    setSurname(event.target.value);
-  }
-  function handleZip(event) {
-    setZip(event.target.value);
-  }
-  function handlefirstName(event) {
-    setFirst(event.target.value);
-  }
-  function handlemidName(event) {
-    setMid(event.target.value);
-  }
-  function handlePrecinct(event) {
-    setPrecinct(event.target.value);
-  }
-  function handleGender(event) {
-    setGender(event.target.value);
-  }
-  function handleCounty(event) {
-    setCounty(event.target.value);
-  }
-  function handleCong(event) {
-    setCong(event.target.value);
-  }
-  function handleSenate(event) {
-    setSenate(event.target.value);
-  }
-  function handleHouse(event) {
-    setHouse(event.target.value);
-  }
-  function handleBirth(event) {
-    setBirth(event.target.value);
+  function changeHandler(e) {
+    setAllValues({...allValues, [e.target.name]: e.target.value})
   }
 
   // Function that called when the submit button is pressed
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('Submit was pressed');
-    axios.get(`http://localhost:5000/surgeo?surname=${surname}&zipcode=${zipcode}`)
+    axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
       .then(res => console.log(res.data));
-    axios.get(`http://localhost:5000/zrp?zipcode=${zipcode}&first_name=${firstName}&last_name=${surname}&middle_name=${midName}&precinct_split=${precinct}&gender=${gender}&county_code=${county}&congressional_district=${cong}&house_district=${house}&birth_date=${birth}&senate_district=${senate}`)
+    axios.get(`http://localhost:5000/zrp?zipcode=${allValues.zipcode}&first_name=${allValues.first_name}&last_name=${allValues.last_name}&middle_name=${allValues.middle_name}&precinct_split=${allValues.precinct_split}&gender=${allValues.gender}&county_code=${allValues.county_code}&congressional_district=${allValues.congressional_district}&house_district=${allValues.house_district}&birth_date=${allValues.birth_date}&senate_district=${allValues.senate_district}`)
       .then(res => console.log(res.data));
   }
 
@@ -87,17 +56,17 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label>Please enter your information:</label>
         <br/><br/>
-        First Name: <input type="text" onChange={handlefirstName}/><br/><br/>
-        Middle Name: <input type="text" onChange={handlemidName}/><br/><br/>
-        Surname: <input type="text" onChange={handleSurname}/><br/><br/>
-        Gender: <input type="text" onChange={handleGender}/><br/><br/>
-        Birthday: <input type="text" onChange={handleBirth}/><br/><br/>
-        Zip code: <input type="text" onChange={handleZip}/><br/><br/>
-        Precinct split: <input type="text" onChange={handlePrecinct}/><br/><br/>
-        County code: <input type="text" onChange={handleCounty}/><br/><br/>
-        Congressional district: <input type="text" onChange={handleCong}/><br/><br/>
-        Senate district: <input type="text" onChange={handleSenate}/><br/><br/>
-        House district: <input type="text" onChange={handleHouse}/><br/><br/>
+        First Name: <input type="text" name="first_name" onChange={changeHandler}/><br/><br/>
+        Middle Name: <input type="text" name="middle_name" onChange={changeHandler}/><br/><br/>
+        Surname: <input type="text" name="last_name" onChange={changeHandler}/><br/><br/>
+        Gender: <input type="text" name="gender" onChange={changeHandler}/><br/><br/>
+        Birthday: <input type="text" name="birth_date" onChange={changeHandler}/><br/><br/>
+        Zip code: <input type="text" name="zipcode" onChange={changeHandler}/><br/><br/>
+        Precinct split: <input type="text" name="precinct_split" onChange={changeHandler}/><br/><br/>
+        County code: <input type="text" name="county_code" onChange={changeHandler}/><br/><br/>
+        Congressional district: <input type="text" name="congressional_district" onChange={changeHandler}/><br/><br/>
+        Senate district: <input type="text" name="senate_district" onChange={changeHandler}/><br/><br/>
+        House district: <input type="text" name="house_district" onChange={changeHandler}/><br/><br/>
         <Button type="submit" value="Submit">submit</Button>
       </form>
       <br/>
