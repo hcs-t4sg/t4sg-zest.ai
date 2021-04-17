@@ -40,6 +40,11 @@ nav {
     text-decoration: none;
 }
 
+img {
+    max-width: 150px;
+    height: auto;
+}
+
 nav ul {
     float: right;
 }

@@ -1,11 +1,7 @@
 import React from 'react';
 import '../style/Display.css';
 
-<<<<<<< HEAD
-// TO-DO: KAYLA(?)
-=======
 // TO-DO: KAYLA
->>>>>>> ea9d8bd (stash before pulling)
 // Build out a display object that takes in the probabilities of each race prediction as a key-value pair object (json-like)
 // and displays them in the style of the WSJ
 

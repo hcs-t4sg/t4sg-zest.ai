@@ -1,5 +1,6 @@
 import React from 'react';
 import '../style/MainNavBar.css';
+import logo from '../zest_logo.png';
 
 function MainNavBar() {
     return (
@@ -12,7 +13,7 @@ function MainNavBar() {
                     <i></i>
                 </label>
                 <div className="logo">
-                    <a href="#">Zest.ai</a>
+                    <a href="#"><img src={logo}/></a>
                 </div>
                 <div className="nav-wrapper">
                     <ul>
