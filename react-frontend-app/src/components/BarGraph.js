@@ -7,10 +7,9 @@ import { axisLeft, axisTop } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { format } from "d3-format";
 import { transition } from "d3-transition";
-import '../style/App.css';
+// import '../style/BarGraph.css';
 
-// import axios from "axios";
-// goal is to pass in data from the api call (currently, this is dummy data)
+// dummy data
 var data = {
     "white": {
         "bisg": "0.6700283648",
@@ -59,33 +58,67 @@ class BarGraph extends React.Component {
     constructor(props) {
         super(props);
         this.createBar = this.createBar.bind(this);
+        this.state = {
+            white: this.props.white,
+            black: this.props.black,
+            native: this.props.native,
+            multiple: this.props.multiple,
+            hispanic: this.props.hispanic,
+            api: this.props.api
+        };
     }
 
     async componentDidMount() {
-        // const res = await axios.get('http://0.0.0.0:5000/surgeo');
-        // const data = await res.json();
         this.createBar(data);
     }
 
     componentDidUpdate() {
+        this.state = {
+            white: this.props.white,
+            black: this.props.black,
+            native: this.props.native,
+            multiple: this.props.multiple,
+            hispanic: this.props.hispanic,
+            api: this.props.api
+        };
         this.createBar(data);
+        // console.log("componentDidUpdate function called");
     }
 
     createBar(data) {
-
-        var chartWidth       = 300,
-            barHeight        = 20,
-            groupHeight      = barHeight * 2,
+        var chartWidth = 300,
+            barHeight = 20,
+            groupHeight = barHeight * 2,
             gapBetweenGroups = 10,
-            spaceForLabels   = 150,
-            spaceForLegend   = 150;
-        
+            spaceForLabels = 150,
+            spaceForLegend = 150;
+
         var zippedData = [];
         var races = ["white", "black", "api", "native", "multiple", "hispanic"];
         var racesCaps = ["White", "Black", "Asian/PI", "Native", "Multiple", "Hispanic"];
-        for (var i=0; i<6; i++) {
+        for (var i = 0; i < 6; i++) {
             zippedData.push(parseFloat(data[races[i]].zest));
-            zippedData.push(parseFloat(data[races[i]].bisg));
+            // zippedData.push(parseFloat(data[races[i]].bisg));
+            switch (races[i]) {
+                case "white":
+                    zippedData.push(this.state.white);
+                    break;
+                case "black":
+                    zippedData.push(this.state.black);
+                    break;
+                case "api":
+                    zippedData.push(this.state.api);
+                    break;
+                case "native":
+                    zippedData.push(this.state.native);
+                    break;
+                case "multiple":
+                    zippedData.push(this.state.multiple);
+                    break;
+                case "hispanic":
+                    zippedData.push(this.state.hispanic);
+                    break;
+            }
         }
 
         var margin = { top: 30, right: 30, bottom: 50, left: 30 };
@@ -94,20 +127,20 @@ class BarGraph extends React.Component {
         var color = d3.scaleOrdinal(d3.schemePastel1);
         var chartHeight = barHeight * 12 + gapBetweenGroups * 6;
 
+        d3.select(".svg-class").select("svg").remove();
+
         var svg = d3
-            .select("body")
+            .select(".svg-class")
             .append("svg")
             .attr("id", "chart-area")
             .style("width", width + 'px')
             .style("height", height + 'px')
-            .attr("transform", "translate(" + (width / 2 - 10) + "," + 10 + ")")
-            .attr("viewBox", [-50, 0, width + 50, chartHeight])
+            // .attr("transform", "translate(" + (width / 2 - 10) + "," + 10 + ")")
+            .attr("viewBox", [0, 0, width + 20, chartHeight * 5 /3])
             .append("g");
 
-
         var x = d3.scaleLinear()
-            // .domain([0, d3.max(zippedData)])
-            .domain([0,1])
+            .domain([0, 1])
             .range([0, chartWidth]);
 
         var y = d3.scaleLinear()
@@ -118,16 +151,16 @@ class BarGraph extends React.Component {
             .tickSize(0);
 
         // Specify the chart area and dimensions
-        var chart = svg.selectAll("g") //d3.select(".chart-area") // ".chart"
+        var chart = svg.selectAll("g")
             .attr("width", spaceForLabels + chartWidth + spaceForLegend)
             .attr("height", chartHeight);
 
         // Chart title
         svg.append("text")
-            .attr("x", (width / 2))             
+            .attr("x", (width / 2))
             .attr("y", -30)
-            .attr("text-anchor", "middle")  
-            .style("font-size", "16px") 
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
             .style("font-weight", "bold")
             .text("Full Race Prediction Model Results");
 
@@ -136,35 +169,35 @@ class BarGraph extends React.Component {
             .data(zippedData)
             .enter()
             .append("g")
-            .attr("transform", function(d, i) { 
-                return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/2))) + ")";
+            .attr("transform", function (d, i) {
+                return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i / 2))) + ")";
             });
-        
+
         // Create rectangles of the correct width
         bar.append("rect")
-            .attr("fill", function(d,i) { return color(i % 2); })
+            .attr("fill", function (d, i) { return color(i % 2); })
             .attr("class", "bar")
             .attr("width", x)
             .attr("height", barHeight - 1)
             .attr("opacity", "0");
-        
+
         // bar transitions
         bar.selectAll("rect")
             .transition()
-            .delay(function (d) {return Math.random()*1000;})
+            .delay(function (d) { return Math.random() * 1000; })
             .duration(800)
             .attr("opacity", "1");
 
         // Add text label in bar
         bar.append("text")
-            .attr("x", function(d) { return x(d) + 5; })
+            .attr("x", function (d) { return x(d) + 5; })
             .attr("y", barHeight / 2)
             .attr("font-size", "10px")
             .attr("fill", "black")
             .attr("dy", ".35em")
             .attr("opacity", "0")
-            .text(function(d) { return d3.format(".2%")(d); });
-        
+            .text(function (d) { return d3.format(".2%")(d); });
+
         bar.selectAll("text")
             .transition()
             .duration(800)
@@ -174,18 +207,18 @@ class BarGraph extends React.Component {
         // Draw labels
         bar.append("text")
             .attr("class", "label")
-            .attr("x", function(d) { return - 20; })
-            .attr("text-anchor", "end")  
+            .attr("x", function (d) { return - 20; })
+            .attr("text-anchor", "end")
             .attr("y", groupHeight / 2)
             .attr("dy", ".35em")
             .attr("opacity", "1")
-            .text(function(d,i) {
+            .text(function (d, i) {
                 if (i % 2 === 0)
-                    return racesCaps[Math.floor(i/2)];
+                    return racesCaps[Math.floor(i / 2)];
                 else
                     return "";
             });
-        
+
         bar.selectAll(".label")
             .transition()
             .duration(800)
@@ -196,9 +229,9 @@ class BarGraph extends React.Component {
         svg.append("g")
             .attr("class", "y axis")
             .attr("opacity", "0.5")
-            .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
+            .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups / 2 + ")")
             .call(yAxis);
-        
+
         // y-axis transition
         // d3.select(".grid").transition().duration(500).delay(1300).style('opacity','0');
 
@@ -220,12 +253,12 @@ class BarGraph extends React.Component {
             .attr("opacity", "0")
             .attr("transform", "translate(" + (width / 2 - chartWidth / 2 - 20) + "," + 0 + ")");
 
-            d3.select(".grid").transition().duration(800).delay(1300).style('opacity','0.3');
-            d3.select(".top-grid").transition().duration(800).delay(1300).style('opacity','0.3');
+        d3.select(".grid").transition().duration(800).delay(1300).style('opacity', '0.3');
+        d3.select(".top-grid").transition().duration(800).delay(1300).style('opacity', '0.3');
 
         // Draw legend/key
         var legendRectSize = 18,
-            legendSpacing  = 4;
+            legendSpacing = 4;
 
         var legend = svg.selectAll('.legend')
             .data(["Zest Model", "BISG Model"])
@@ -233,7 +266,7 @@ class BarGraph extends React.Component {
             .append('g')
             .attr('transform', function (d, i) {
                 var height = legendRectSize + legendSpacing;
-                var offset = -gapBetweenGroups/2;
+                var offset = -gapBetweenGroups / 2;
                 var horz = spaceForLabels + chartWidth + 100 - legendRectSize;
                 var vert = i * height - offset;
                 return 'translate(' + horz + ',' + vert + ')';
@@ -255,7 +288,7 @@ class BarGraph extends React.Component {
 
     }
     render() {
-        return "";
+        return '';
     }
 }
 

@@ -12,12 +12,17 @@ import './style/App.css';
 
 // Import different components
 import Description from './components/Description'
-import Display from './components/Display'
 import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
 import BarGraph from './components/BarGraph'
 
 function App() {
+
+  const [loading, setLoading] = useState(true);
+  // bisgData stores probabilities from bisg
+  var [bisgData, setbisgData] = useState('default bisg');
+  console.log(bisgData);
+
   const [allValues, setAllValues] = useState({
     zipcode: '',
     last_name: '',
@@ -38,20 +43,26 @@ function App() {
   }
 
   // Function that called when the submit button is pressed
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
-      .then(res => console.log(res.data));
+      .then(res => {
+        setbisgData(res.data);
+        console.log(res.data);
+      });
     axios.get(`http://localhost:5000/zrp?zipcode=${allValues.zipcode}&first_name=${allValues.first_name}&last_name=${allValues.last_name}&middle_name=${allValues.middle_name}&precinct_split=${allValues.precinct_split}&gender=${allValues.gender}&county_code=${allValues.county_code}&congressional_district=${allValues.congressional_district}&house_district=${allValues.house_district}&birth_date=${allValues.birth_date}&senate_district=${allValues.senate_district}`)
-      .then(res => console.log(res.data));
+      .then(res => {
+        console.log(res.data);
+      });
+      setLoading(false);
   }
 
   return (
     <div className="App">
       <MainNavBar />
-      <br/><br/><br/><br/><br/>
+      <br /><br /><br /><br /><br />
       <h1>Zest AI Race Predictor Prototype</h1>
-      <br/>
+      <br />
       <Description />
       <form onSubmit={handleSubmit}>
         <label>Please enter your information:</label>
@@ -70,11 +81,12 @@ function App() {
         <Button type="submit" value="Submit">submit</Button>
       </form>
       <br/>
-      <div>
-        <h4>Breakdown</h4>
-        <BarGraph />
-      </div>
-
+      { (bisgData == 'default bisg' || loading) 
+        ? <div> <h3>Nothing here, submit your data!</h3> </div>
+        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
+      }
+      <br/>
+      <br/>
       {/* Also in progress */}
       {/* <Display /> */}
       <Footer />
