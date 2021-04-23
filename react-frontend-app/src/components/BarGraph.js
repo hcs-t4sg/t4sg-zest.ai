@@ -64,7 +64,13 @@ class BarGraph extends React.Component {
             native: this.props.native,
             multiple: this.props.multiple,
             hispanic: this.props.hispanic,
-            api: this.props.api
+            api: this.props.api,
+            zrpWhite: this.props.zrpWhite,
+            zrpBlack: this.props.zrpBlack,
+            zrpNative: this.props.zrpNative,
+            zrpMulti: this.props.zrpMulti,
+            zrpHispanic: this.props.zrpHispanic,
+            zrpApi: this.props.zrpApi
         };
     }
 
@@ -79,7 +85,13 @@ class BarGraph extends React.Component {
             native: this.props.native,
             multiple: this.props.multiple,
             hispanic: this.props.hispanic,
-            api: this.props.api
+            api: this.props.api,
+            zrpWhite: this.props.zrpWhite,
+            zrpBlack: this.props.zrpBlack,
+            zrpNative: this.props.zrpNative,
+            zrpMulti: this.props.zrpMulti,
+            zrpHispanic: this.props.zrpHispanic,
+            zrpApi: this.props.zrpApi
         };
         this.createBar(data);
         // console.log("componentDidUpdate function called");
@@ -97,25 +109,31 @@ class BarGraph extends React.Component {
         var races = ["white", "black", "api", "native", "multiple", "hispanic"];
         var racesCaps = ["White", "Black", "Asian/PI", "Native", "Multiple", "Hispanic"];
         for (var i = 0; i < 6; i++) {
-            zippedData.push(parseFloat(data[races[i]].zest));
+            // zippedData.push(parseFloat(data[races[i]].zest));
             // zippedData.push(parseFloat(data[races[i]].bisg));
             switch (races[i]) {
                 case "white":
+                    zippedData.push(this.state.zrpWhite);
                     zippedData.push(this.state.white);
                     break;
                 case "black":
+                    zippedData.push(this.state.zrpBlack);
                     zippedData.push(this.state.black);
                     break;
                 case "api":
+                    zippedData.push(this.state.zrpApi);
                     zippedData.push(this.state.api);
                     break;
                 case "native":
+                    zippedData.push(this.state.zrpNative);
                     zippedData.push(this.state.native);
                     break;
                 case "multiple":
+                    zippedData.push(this.state.zrpMulti);
                     zippedData.push(this.state.multiple);
                     break;
                 case "hispanic":
+                    zippedData.push(this.state.zrpHispanic);
                     zippedData.push(this.state.hispanic);
                     break;
             }

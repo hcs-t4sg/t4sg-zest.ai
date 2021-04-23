@@ -19,9 +19,14 @@ import BarGraph from './components/BarGraph'
 function App() {
 
   const [loading, setLoading] = useState(true);
+
   // bisgData stores probabilities from bisg
   var [bisgData, setbisgData] = useState('default bisg');
-  console.log(bisgData);
+  console.log("bisgData: ", bisgData);
+  // zrpData stores probs from zrp model
+  var [zrpData, setzrpData] = useState('default zrp');
+  console.log("zrpData: ", zrpData);
+
 
   const [allValues, setAllValues] = useState({
     zipcode: '',
@@ -48,11 +53,12 @@ function App() {
     axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
       .then(res => {
         setbisgData(res.data);
-        console.log(res.data);
+        console.log("bisgData has been updated: ", res.data);
       });
     axios.get(`http://localhost:5000/zrp?zipcode=${allValues.zipcode}&first_name=${allValues.first_name}&last_name=${allValues.last_name}&middle_name=${allValues.middle_name}&precinct_split=${allValues.precinct_split}&gender=${allValues.gender}&county_code=${allValues.county_code}&congressional_district=${allValues.congressional_district}&house_district=${allValues.house_district}&birth_date=${allValues.birth_date}&senate_district=${allValues.senate_district}`)
       .then(res => {
-        console.log(res.data);
+        setzrpData(res.data);
+        console.log("zrpData has been updated: ", res.data);
       });
       setLoading(false);
   }
@@ -83,7 +89,11 @@ function App() {
       <br/>
       { (bisgData == 'default bisg' || loading) 
         ? <div> <h3>Nothing here, submit your data!</h3> </div>
-        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
+        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} 
+        black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} 
+        multiple={bisgData.multiple[0]} native={bisgData.native[0]} zrpWhite={zrpData["White"]}
+        zrpBlack={zrpData["Black"]} zrpApi={zrpData["Asian Pacific Islander"]} zrpHispanic={zrpData["Hispanic"]}
+        zrpMulti={zrpData["Multi"]} zrpNative={zrpData["American Indian"]} /> </div> 
       }
       <br/>
       <br/>
