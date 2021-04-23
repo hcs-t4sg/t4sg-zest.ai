@@ -19,9 +19,14 @@ import Button from 'react-bootstrap/Button';
 function App() {
 
   const [loading, setLoading] = useState(true);
+
   // bisgData stores probabilities from bisg
   var [bisgData, setbisgData] = useState('default bisg');
-
+  console.log("bisgData: ", bisgData);
+  // zrpData stores probs from zrp model
+  var [zrpData, setzrpData] = useState('default zrp');
+  console.log("zrpData: ", zrpData);
+  
   const [allValues, setAllValues] = useState({
     first_name: '',
     middle_name: '',
@@ -45,11 +50,12 @@ function App() {
     axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
       .then(res => {
         setbisgData(res.data);
-        console.log(res.data);
+        console.log("bisgData has been updated: ", res.data);
       });
     axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
       .then(res => {
-        console.log(res.data);
+        setzrpData(res.data);
+        console.log("zrpData has been updated: ", res.data);
       });
     setLoading(false);
   }
@@ -78,10 +84,14 @@ function App() {
       Zip code: <input type="text" name="zipcode" onChange={changeHandler} /> <br /> <br />
       <Button type="submit" value="Submit">Submit</Button>
       </form>
-      <br />
-      {(bisgData == 'default bisg' || loading)
-        ? <div> <p>Nothing here, submit your data!</p> <br /><br /></div>
-        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div>
+      <br/>
+      { (bisgData == 'default bisg' || loading) 
+        ? <div> <h3>Nothing here, submit your data!</h3> </div>
+        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} 
+        black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} 
+        multiple={bisgData.multiple[0]} native={bisgData.native[0]} zrpWhite={zrpData["White"]}
+        zrpBlack={zrpData["Black"]} zrpApi={zrpData["Asian Pacific Islander"]} zrpHispanic={zrpData["Hispanic"]}
+        zrpMulti={zrpData["Multi"]} zrpNative={zrpData["American Indian"]} /> </div> 
       }
       <Footer />
     </div>
