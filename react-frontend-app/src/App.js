@@ -26,7 +26,7 @@ function App() {
   // zrpData stores probs from zrp model
   var [zrpData, setzrpData] = useState('default zrp');
   console.log("zrpData: ", zrpData);
-  
+
   const [allValues, setAllValues] = useState({
     first_name: '',
     middle_name: '',
@@ -57,6 +57,10 @@ function App() {
         setzrpData(res.data);
         console.log("zrpData has been updated: ", res.data);
       });
+    axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=<AddressValidateRequest USERID="658HARVA0117"><Address ID="0"><Address1>5330 N Luna St</Address1><Address2/><City>Chicago</City><State>IL</State><Zip5>60630</Zip5><Zip4/></Address></AddressValidateRequest>`)
+      .then(res => {
+        console.log("address validation chicago example: ", res.data);
+    });
     setLoading(false);
   }
 
