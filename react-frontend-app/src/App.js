@@ -71,7 +71,7 @@ function App() {
         Middle name: <input type="text" name="middle_name" onChange={changeHandler} /> <br /> <br />
         Last name: <input type="text" name="last_name" onChange={changeHandler} /> <br /> <br />
         Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br />
-        Birthday: <input type="text" name="birth_date" onChange={changeHandler} /> <br /> <br />
+        Age: <input type="text" name="age" onChange={changeHandler} /> <br /> <br />
         Street address: <input type="text" name="street_address" onChange={changeHandler} /> <br /> <br />
         City: <input type="text" name="city" onChange={changeHandler} /> <br /> <br />
         State: <input type="text" name="state" onChange={changeHandler} /> <br /> <br />
@@ -80,7 +80,7 @@ function App() {
       </form>
       <br />
       {(bisgData == 'default bisg' || loading)
-        ? <div> <h3>Nothing here, submit your data!</h3> <br /><br /></div>
+        ? <div> <p>Nothing here, submit your data!</p> <br /><br /></div>
         : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div>
       }
       <Footer />
