@@ -8,6 +8,9 @@ from sklearn.preprocessing import MultiLabelBinarizer, OrdinalEncoder
 from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
 import zrp_feature_engineering
+import zrp_feature_engineering_NC
+from zrp_feature_engineering_NC import ZRPFeatureEngineeringNC
+import proxy_fe
 
 class Basic_PreProcessor():
     '''This class is used to execute general ZRP preprocessing. This is an example class requiring access to the proxy_fe.py script & functions. 
@@ -48,5 +51,15 @@ def generatePredictions(data):
     zrp_fe = pd.read_pickle(r'/code/picklefiles/zrp_fe_pkl.obj')
     sample_data_transform_1 = zrp_fe.transform(sample_data_transform_0)
     zrp_model = pd.read_pickle(r'/code/picklefiles/clf_fl.obj')
+    zrp_result_probs = np.round(zrp_model.predict_proba(sample_data_transform_1),3)
+    return zrp_result_probs
+
+def generateNCPredictions(data):
+    sys.setrecursionlimit(3000)
+    bpp = Basic_PreProcessor()
+    sample_data_transform_0 = bpp.transform(data)
+    zrp_fe = pd.read_pickle(r'/code/picklefiles/zrp_fe_nc.obj')
+    sample_data_transform_1 = zrp_fe.transform(sample_data_transform_0)
+    zrp_model = pd.read_pickle(r'/code/picklefiles/clf-nc-5pct.obj')
     zrp_result_probs = np.round(zrp_model.predict_proba(sample_data_transform_1),3)
     return zrp_result_probs

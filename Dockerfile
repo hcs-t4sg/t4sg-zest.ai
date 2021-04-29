@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.7.7
+FROM python:3.8.5
 
 # set the working director in the container
 WORKDIR /code

@@ -79,6 +79,7 @@ class ZRPFeatureEngineering():
         X_fe = pd.concat([self.le[i].transform(X[self.label_encoded_columns]) for i in range(self.n_classes)],
                          axis=1, sort=False
                         )
+        
 
         X_fe = pd.concat([X_fe,
                           pd.DataFrame(self.oe.transform(X[self.ordinal_encoded_columns])),

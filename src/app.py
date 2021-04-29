@@ -18,7 +18,9 @@ from sklearn.preprocessing import MultiLabelBinarizer, OrdinalEncoder
 from category_encoders import TargetEncoder
 from xgboost import XGBClassifier
 import zrp_predict
-from zrp_predict import zrp_feature_engineering, Basic_PreProcessor
+from zrp_predict import zrp_feature_engineering, zrp_feature_engineering_NC, Basic_PreProcessor
+from zrp_feature_engineering_NC import ZRPFeatureEngineeringNC
+from zrp_feature_engineering import ZRPFeatureEngineering
 
 
 app = Flask(__name__)
@@ -46,11 +48,11 @@ def zrp(zipcode, last_name, first_name, middle_name, precinct_split, gender,
     # Example of return object: {'AAPI': .56, 'Hispanic': .32, ..., 'White': .10}
     # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 
     # 'County_Code','Congressional_District', 'Senate_District', 'House_District', 'Birth_Date'
-
+     
     data = {'Name_First': [str(first_name)], 
             'Name_Last': [str(last_name)],
             'Name_Middle': [str(middle_name)], 
-            'Zipcode': [int(zipcode)], 
+            'Zipcode': [str(zipcode)], 
             'Precinct_Split': [str(precinct_split)], 
             'Gender': [str(gender)], 
             'County_Code': [str(county_code)], 
@@ -58,9 +60,39 @@ def zrp(zipcode, last_name, first_name, middle_name, precinct_split, gender,
             'Senate_District': [float(senate_district)], 
             'House_District': [float(house_district)], 
             'Birth_Date': [str(birth_date)]}
-    
     sample = pd.DataFrame(data)
-    preds = zrp_predict.generatePredictions(sample)
+    
+    if (int(zipcode) > 32000):  #florida
+        data = {'Name_First': [str(first_name)], 
+            'Name_Last': [str(last_name)],
+            'Name_Middle': [str(middle_name)], 
+            'Zipcode': [str(zipcode)], 
+            'Precinct_Split': [str(precinct_split)], 
+            'Gender': [str(gender)], 
+            'County_Code': [str(county_code)], 
+            'Congressional_District':[float(congressional_district)], 
+            'Senate_District': [float(senate_district)], 
+            'House_District': [float(house_district)], 
+            'Birth_Date': [str(birth_date)]}
+        sample = pd.DataFrame(data)
+        preds = zrp_predict.generatePredictions(sample)
+    else:
+        data = {'Name_First': [str(first_name)], 
+            'Name_Last': [str(last_name)],
+            'Name_Middle': [str(middle_name)], 
+            'Zipcode': [str(zipcode)], 
+            'Precinct_Split': [float(precinct_split)], 
+            'Gender': [str(gender)], 
+            'County_Code': [str(county_code)], 
+            'Congressional_District':[float(congressional_district)], 
+            'Senate_District': [float(senate_district)], 
+            'House_District': [float(house_district)], 
+            'Birth_Date': [str(birth_date)]}
+        sample = pd.DataFrame(data)
+        preds = zrp_predict.generateNCPredictions(sample)
+    
+    #return preds
+    #print(preds, file = sys.stderr)
 
 
     preds_data = {'American Indian': str(preds[0][0]), 
