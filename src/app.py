@@ -2,6 +2,7 @@ from flask import Flask, request, session, jsonify, redirect, render_template
 from flask_cors import CORS
 import time
 import json
+import requests
 
 # Needed for surgeo route
 import pandas as pd 
@@ -24,13 +25,17 @@ from utils.api_tools import surgeo_helper, zrp_helper
 from utils.data_augmentation import *
 
 app = Flask(__name__)
-CORS(app, resources={r"/surgeo/*": {"origins": "*"}, r"/zrp/*": {"origins": "*"}})
+CORS(app)
+app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:50000', "*"]
+app.config['CORS_HEADERS'] = ['Content-Type']
 
 @app.route('/hello')
 def say_hello_world():
     return {'result': "Flask says Hello World"}
 
 @app.route('/surgeo', methods=["GET", "POST"])
+# @cross_origin()
+# @allow_headers()
 def internal_surgeo():
     # API for internal use and testing only; will be deprecated in the future
     # Required fields: 'surname', 'zipcode'
@@ -42,22 +47,36 @@ def internal_surgeo():
                       zipcode=zipcode)
 
 @app.route('/zrp', methods=["GET"])
+# @cross_origin()
+# @allow_headers()
 def internal_zrp():
     # API for internal use and testing only; will be deprecated in the future
     # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 
     # 'County_Code','Congressional_District', 'Senate_District', 'House_District', 'Birth_Date'
 
-    zipcode = request.args.get('zipcode')
-    last_name = request.args.get('last_name')
     first_name = request.args.get('first_name')
     middle_name = request.args.get('middle_name')
-    precinct_split = request.args.get('precinct_split')
+    last_name = request.args.get('last_name')
     gender = request.args.get('gender')
-    county_code = request.args.get('county_code')
-    congressional_district = request.args.get('congressional_district')
-    senate_district = request.args.get('senate_district')
-    house_district = request.args.get('house_district')
     birth_date = request.args.get('birth_date')
+    zipcode = request.args.get('zipcode')
+
+    street_address = request.args.get('street_address')
+    city = request.args.get('city')
+    state = request.args.get('state')
+
+    address = str(street_address) + ' ' + str(city) + ' ' + str(state) + ' ' + str(zipcode)
+
+    # return(address)
+
+    req = requests.get(f'https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?address={address}&format=json&benchmark=4&vintage=4&layers=54,56,58&key=5554dd8086566b4f511eaf1add52ea5d8c4b09fa')
+
+    precinct_split = ""
+    county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["COUNTY"]
+    congressional_district = req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"]
+    senate_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"]
+    house_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"]
+    
 
     return zrp_helper(zipcode=zipcode,
                last_name=last_name,
