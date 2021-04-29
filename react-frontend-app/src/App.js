@@ -21,7 +21,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   // bisgData stores probabilities from bisg
   var [bisgData, setbisgData] = useState('default bisg');
-  console.log(bisgData);
 
   const [allValues, setAllValues] = useState({
     first_name: '',

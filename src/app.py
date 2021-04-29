@@ -34,8 +34,6 @@ def say_hello_world():
     return {'result': "Flask says Hello World"}
 
 @app.route('/surgeo', methods=["GET", "POST"])
-# @cross_origin()
-# @allow_headers()
 def internal_surgeo():
     # API for internal use and testing only; will be deprecated in the future
     # Required fields: 'surname', 'zipcode'
@@ -47,8 +45,6 @@ def internal_surgeo():
                       zipcode=zipcode)
 
 @app.route('/zrp', methods=["GET"])
-# @cross_origin()
-# @allow_headers()
 def internal_zrp():
     # API for internal use and testing only; will be deprecated in the future
     # Required fields: 'Name_First', 'Name_Last', 'Name_Middle', 'Zipcode', 'Precinct_Split','Gender', 
@@ -69,14 +65,14 @@ def internal_zrp():
 
     # return(address)
 
-    req = requests.get(f'https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?address={address}&format=json&benchmark=4&vintage=4&layers=54,56,58&key=5554dd8086566b4f511eaf1add52ea5d8c4b09fa')
-
-    precinct_split = ""
+    req = requests.get(f'https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?address={address}&format=json&benchmark=4&vintage=4&layers=10,54,56,58&key=5554dd8086566b4f511eaf1add52ea5d8c4b09fa')
+    req = req.json()
+    
+    precinct_split = "NaN"
     county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["COUNTY"]
     congressional_district = req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"]
     senate_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"]
     house_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"]
-    
 
     return zrp_helper(zipcode=zipcode,
                last_name=last_name,
