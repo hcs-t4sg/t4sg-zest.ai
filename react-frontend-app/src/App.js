@@ -27,7 +27,7 @@ function App() {
     middle_name: '',
     last_name: '',
     gender: '',
-    birth_date: '',
+    age: '',
     street_address: '',
     city: '',
     state: '',
@@ -47,7 +47,7 @@ function App() {
         setbisgData(res.data);
         console.log(res.data);
       });
-    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&birth_date=${allValues.birth_date}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
+    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
       .then(res => {
         console.log(res.data);
       });

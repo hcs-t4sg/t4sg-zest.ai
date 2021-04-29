@@ -41,8 +41,8 @@ def internal_surgeo():
     surname = request.args.get('surname')
     zipcode = request.args.get('zipcode')
 
-    return surgeo_helper(surname=surname, 
-                      zipcode=zipcode)
+    return surgeo_helper(surname=surname,
+                        zipcode=zipcode)
 
 @app.route('/zrp', methods=["GET"])
 def internal_zrp():
@@ -54,7 +54,10 @@ def internal_zrp():
     middle_name = request.args.get('middle_name')
     last_name = request.args.get('last_name')
     gender = request.args.get('gender')
-    birth_date = request.args.get('birth_date')
+    age = int(request.args.get('age'))
+
+    currentYear = dt.date.today().year
+    birth_date = "01/02/" + str(2021 - age)
     zipcode = request.args.get('zipcode')
 
     street_address = request.args.get('street_address')
@@ -63,17 +66,15 @@ def internal_zrp():
 
     address = str(street_address) + ' ' + str(city) + ' ' + str(state) + ' ' + str(zipcode)
 
-    # return(address)
-
     req = requests.get(f'https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress?address={address}&format=json&benchmark=4&vintage=4&layers=10,54,56,58&key=5554dd8086566b4f511eaf1add52ea5d8c4b09fa')
     req = req.json()
     
-    precinct_split = "NaN"
+    precinct_split = ""
     county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["COUNTY"]
     congressional_district = req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"]
     senate_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"]
     house_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"]
-
+    
     return zrp_helper(zipcode=zipcode,
                last_name=last_name,
                first_name=first_name,
