@@ -81,11 +81,12 @@ def internal_zrp():
     if county_code in special_county_codes:
         county_code = special_county_codes[county_code]
     else: 
-        county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["BASENAME"][0:2]
+        county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["BASENAME"][0:3]
 
-    congressional_district = float(req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"])
-    senate_district = float(req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"])
-    house_district = float(req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"])
+
+    congressional_district = req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"]
+    senate_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"]
+    house_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"]
 
     return zrp_helper(zipcode=zipcode,
         last_name=last_name,
