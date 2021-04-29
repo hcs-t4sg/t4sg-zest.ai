@@ -27,7 +27,7 @@ function App() {
     middle_name: '',
     last_name: '',
     gender: '',
-    birth_date: '',
+    age: '',
     street_address: '',
     city: '',
     state: '',
@@ -47,7 +47,7 @@ function App() {
         setbisgData(res.data);
         console.log(res.data);
       });
-    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&birth_date=${allValues.birth_date}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
+    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
       .then(res => {
         console.log(res.data);
       });
@@ -68,7 +68,7 @@ function App() {
         Middle name: <input type="text" name="middle_name" onChange={changeHandler}/><br/><br/>
         Last name: <input type="text" name="last_name" onChange={changeHandler}/><br/><br/>
         Gender: <input type="text" name="gender" onChange={changeHandler}/><br/><br/>
-        Birthday: <input type="text" name="birth_date" onChange={changeHandler}/><br/><br/>
+        Age: <input type="number" name="age" onChange={changeHandler}/><br/><br/>
         Street address: <input type="text" name="street_address" onChange={changeHandler}/><br/><br/>
         City: <input type="text" name="city" onChange={changeHandler}/><br/><br/>
         State: <input type="text" name="state" onChange={changeHandler}/><br/><br/>
