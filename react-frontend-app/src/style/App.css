@@ -37,6 +37,20 @@
   }
 }
 
+h1 {
+  font-size: 3.5em;
+  font-style: normal;
+  font-weight: 1200;
+  line-height: 50px;
+  letter-spacing: 0em;
+  padding-top: 0.3em;
+}
+
+label {
+  font-size: 1.25em;
+}
+
+
 /* TO-DO: AUSTIN
 
 Here you should add CSS classes and ids in order to style the general front-end of the React app.

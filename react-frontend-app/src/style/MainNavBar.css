@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+nav {
+    padding: 8px;
+}
+
 html {
     margin: 0;
     padding: 0;
@@ -20,24 +24,11 @@ body {
     background-size: cover;
 }
 
-nav {
-    padding: 8px;
-}
-
 .logo {
     float: left;
     padding: 8px;
     margin-left: 16px;
     margin-top: 8px;
-}
-
-.logo a {
-    color: #01222D;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 0px;
-    text-decoration: none;
 }
 
 img {
