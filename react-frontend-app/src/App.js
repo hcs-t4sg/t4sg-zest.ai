@@ -12,9 +12,9 @@ import Footer from './components/Footer'
 import MainNavBar from './components/MainNavBar'
 import BarGraph from './components/BarGraph'
 import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import { Col } from 'react-bootstrap';
+// import Container from 'react-bootstrap/Container';
+// import Form from 'react-bootstrap/Form';
+// import { Col } from 'react-bootstrap';
 
 function App() {
 
@@ -36,7 +36,7 @@ function App() {
 
   // Functions that are called whenever the text input is changed
   function changeHandler(e) {
-    setAllValues({...allValues, [e.target.name]: e.target.value})
+    setAllValues({ ...allValues, [e.target.name]: e.target.value })
   }
 
   // Function that called when the submit button is pressed
@@ -51,37 +51,38 @@ function App() {
       .then(res => {
         console.log(res.data);
       });
-      setLoading(false);
+    setLoading(false);
   }
 
   return (
     <div className="App">
       <MainNavBar />
-      <br /><br /><br /><br /><br />
-      <h1>Zest AI Race Predictor Prototype</h1>
+
+      <h1>Zest Race Predictor</h1>
       <br />
       <Description />
-      <form onSubmit={handleSubmit}>
-        <label>Please enter your information:</label>
-        <br/><br/>
-        First name: <input type="text" name="first_name" onChange={changeHandler}/><br/><br/>
-        Middle name: <input type="text" name="middle_name" onChange={changeHandler}/><br/><br/>
-        Last name: <input type="text" name="last_name" onChange={changeHandler}/><br/><br/>
-        Gender: <input type="text" name="gender" onChange={changeHandler}/><br/><br/>
-        Birthday: <input type="text" name="birth_date" onChange={changeHandler}/><br/><br/>
-        Street address: <input type="text" name="street_address" onChange={changeHandler}/><br/><br/>
-        City: <input type="text" name="city" onChange={changeHandler}/><br/><br/>
-        State: <input type="text" name="state" onChange={changeHandler}/><br/><br/>
-        Zip code: <input type="text" name="zipcode" onChange={changeHandler}/><br/><br/>
-        <Button type="submit" value="Submit">submit</Button>
+      <hr style={{
+        width: "50%"
+      }}></hr>
+      < form onSubmit={handleSubmit} >
+        <label> Please enter your information: </label>
+        <br /> <br />
+        First name: <input type="text" name="first_name" onChange={changeHandler} /> <br /> <br />
+        Middle name: <input type="text" name="middle_name" onChange={changeHandler} /> <br /> <br />
+        Last name: <input type="text" name="last_name" onChange={changeHandler} /> <br /> <br />
+        Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br />
+        Birthday: <input type="text" name="birth_date" onChange={changeHandler} /> <br /> <br />
+        Street address: <input type="text" name="street_address" onChange={changeHandler} /> <br /> <br />
+        City: <input type="text" name="city" onChange={changeHandler} /> <br /> <br />
+        State: <input type="text" name="state" onChange={changeHandler} /> <br /> <br />
+        Zip code: <input type="text" name="zipcode" onChange={changeHandler} /> <br /> <br />
+        <Button type="submit" value="Submit">Submit</Button>
       </form>
-      <br/>
-      { (bisgData == 'default bisg' || loading) 
-        ? <div> <h3>Nothing here, submit your data!</h3> </div>
-        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div> 
+      <br />
+      {(bisgData == 'default bisg' || loading)
+        ? <div> <h3>Nothing here, submit your data!</h3> <br /><br /></div>
+        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div>
       }
-      <br/>
-      <br/>
       <Footer />
     </div>
   );

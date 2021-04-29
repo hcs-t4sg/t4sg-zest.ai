@@ -8,10 +8,13 @@ class Description extends React.Component {
         super(props)
     }
 
-    render () {
+    render() {
         return (
-            <div>
-                <p>I am the Zest description that explains how the app works to a user. I'm very sad b/c I have no code here yet</p>
+            <div class="description">
+                <p> The <em>Zest Race Predictor (ZRP)</em> is an improved race prediction technology designed to <em>improve accountability</em> and <em>better facilitate fair lending</em>. This web application compares the ZRP with the current standard model used by the Consumer Financial Protection Bureau, BisG.
+
+                    <br /><br /> By <em>Zest.Ai</em> and <em>Harvard Tech for Social Good</em></p>
+
             </div>
         )
     }

@@ -1,0 +1,16 @@
+.description {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.description p {
+    width: 50em;
+    color: black;
+    text-align: left;
+}
+
+em {
+    font-style: normal;
+    font-weight: 700;
+}
