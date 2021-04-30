@@ -1,5 +1,5 @@
 // Import pre-existing react libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 // Import stylesheet
@@ -26,6 +26,8 @@ function App() {
   // zrpData stores probs from zrp model
   var [zrpData, setzrpData] = useState('default zrp');
   console.log("zrpData: ", zrpData);
+  var [validAddress, setvalidAddress] = useState(false);
+  var [address, setAddress] = useState('empty');
 
   const [allValues, setAllValues] = useState({
     first_name: '',
@@ -44,24 +46,56 @@ function App() {
     setAllValues({ ...allValues, [e.target.name]: e.target.value })
   }
 
+  useEffect(() => {console.log(validAddress)}, [validAddress]);
+  useEffect(() => {console.log("all values: ", allValues)}, [allValues]);
+
   // Function that called when the submit button is pressed
   async function handleSubmit(event) {
     event.preventDefault();
-    axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
+    
+    axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=<AddressValidateRequest USERID="658HARVA0117"><Address ID="0"><Address1>${allValues.street_address}</Address1><Address2/><City>${allValues.city}</City><State>${allValues.state}</State><Zip5>${allValues.zipcode}</Zip5><Zip4/></Address></AddressValidateRequest>`)
+      .then(res => {
+        console.log("address validation string: ", res.data);
+        setAddress(res.data);
+        if (res.data.includes("<Error>")) {
+          setvalidAddress(false);
+        }
+        else {
+          setvalidAddress(true);
+        }
+    });
+
+    if (validAddress) {
+
+      var domParser = new DOMParser();
+      var xmlDocument = domParser.parseFromString(address, "text/xml");
+
+      console.log(xmlDocument);
+
+      setAllValues({
+        first_name: allValues.first_name,
+        middle_name: allValues.middle_name,
+        last_name: allValues.last_name,
+        gender: allValues.gender,
+        age: allValues.age,
+        street_address: xmlDocument.getElementsByTagName("Address2")[0].childNodes[0].nodeValue,
+        city: xmlDocument.getElementsByTagName("City")[0].childNodes[0].nodeValue,
+        state: xmlDocument.getElementsByTagName("State")[0].childNodes[0].nodeValue,
+        zipcode: xmlDocument.getElementsByTagName("Zip5")[0].childNodes[0].nodeValue
+      });
+      
+      axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
       .then(res => {
         setbisgData(res.data);
         console.log("bisgData has been updated: ", res.data);
       });
-    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
-      .then(res => {
-        setzrpData(res.data);
-        console.log("zrpData has been updated: ", res.data);
-      });
-    // axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=<AddressValidateRequest USERID="658HARVA0117"><Address ID="0"><Address1>5330 N Luna St</Address1><Address2/><City>Chicago</City><State>IL</State><Zip5>60630</Zip5><Zip4/></Address></AddressValidateRequest>`)
-    axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=<AddressValidateRequest USERID="658HARVA0117"><Address ID="0"><Address1>5330 N Luna St</Address1><Address2/><City>Chicago</City><State>IL</State><Zip5>${allValues.zipcode}</Zip5><Zip4/></Address></AddressValidateRequest>`)
-      .then(res => {
-        console.log("address validation chicago example: ", res.data);
-    });
+      axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
+        .then(res => {
+          setzrpData(res.data);
+          console.log("zrpData has been updated: ", res.data);
+        });
+    }
+
     setLoading(false);
   }
 
@@ -90,13 +124,17 @@ function App() {
       <Button type="submit" value="Submit">Submit</Button>
       </form>
       <br/>
-      { (bisgData == 'default bisg' || loading) 
-        ? <div> <h3>Nothing here, submit your data!</h3> </div>
+      { (!validAddress && !loading)
+        ? <div> <h3>Invalid address. Please try again.</h3></div>
+        : <div> <h3> </h3> </div>
+      }
+      { (bisgData == 'default bisg' || loading || !validAddress)
+        ? <div> <h3> </h3> </div>
         : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} 
-        black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} 
-        multiple={bisgData.multiple[0]} native={bisgData.native[0]} zrpWhite={zrpData["White"]}
-        zrpBlack={zrpData["Black"]} zrpApi={zrpData["Asian Pacific Islander"]} zrpHispanic={zrpData["Hispanic"]}
-        zrpMulti={zrpData["Multi"]} zrpNative={zrpData["American Indian"]} /> </div> 
+          black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} 
+          multiple={bisgData.multiple[0]} native={bisgData.native[0]} zrpWhite={zrpData["White"]}
+          zrpBlack={zrpData["Black"]} zrpApi={zrpData["Asian Pacific Islander"]} zrpHispanic={zrpData["Hispanic"]}
+          zrpMulti={zrpData["Multi"]} zrpNative={zrpData["American Indian"]} /> </div>
       }
       <Footer />
     </div>
