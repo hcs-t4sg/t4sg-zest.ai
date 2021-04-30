@@ -1,5 +1,5 @@
 // Import pre-existing react libraries
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 // Import stylesheet
@@ -18,9 +18,14 @@ import Button from 'react-bootstrap/Button';
 
 function App() {
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   // bisgData stores probabilities from bisg
   var [bisgData, setbisgData] = useState('default bisg');
+  // zrpData stores probs from zrp model
+  var [zrpData, setzrpData] = useState('default zrp');
+  var [validAddress, setvalidAddress] = useState(false);
+  var [address, setAddress] = useState('empty');
 
   const [allValues, setAllValues] = useState({
     first_name: '',
@@ -39,49 +44,99 @@ function App() {
     setAllValues({ ...allValues, [e.target.name]: e.target.value })
   }
 
+  // useEffect(() => {console.log('loading', loading)}, [loading]);
+  // useEffect(() => {console.log('address', validAddress)}, [validAddress]);
+  // useEffect(() => {console.log("all values: ", allValues.street_address)}, [allValues.street_address]);
+
   // Function that called when the submit button is pressed
   async function handleSubmit(event) {
     event.preventDefault();
-    axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
+    setLoading(true);
+    axios.get(`https://secure.shippingapis.com/ShippingAPI.dll?API=Verify&XML=<AddressValidateRequest USERID="658HARVA0117"><Address ID="0"><Address1>${allValues.street_address}</Address1><Address2/><City>${allValues.city}</City><State>${allValues.state}</State><Zip5>${allValues.zipcode}</Zip5><Zip4/></Address></AddressValidateRequest>`)
+      .then(res => {
+        setAddress(res.data);
+        if (res.data.includes("<Error>")) {
+          setvalidAddress(false);
+        }
+        else {
+          setvalidAddress(true);
+        }
+    });
+
+    if (validAddress) {
+      var domParser = new DOMParser();
+      var xmlDocument = domParser.parseFromString(address, "text/xml");
+
+      console.log(xmlDocument);
+
+      setAllValues({
+        first_name: allValues.first_name,
+        middle_name: allValues.middle_name,
+        last_name: allValues.last_name,
+        gender: allValues.gender,
+        age: allValues.age,
+        street_address: xmlDocument.getElementsByTagName("Address2")[0].childNodes[0].nodeValue,
+        city: xmlDocument.getElementsByTagName("City")[0].childNodes[0].nodeValue,
+        state: xmlDocument.getElementsByTagName("State")[0].childNodes[0].nodeValue,
+        zipcode: xmlDocument.getElementsByTagName("Zip5")[0].childNodes[0].nodeValue
+      });
+      
+      axios.get(`http://localhost:5000/surgeo?surname=${allValues.last_name}&zipcode=${allValues.zipcode}`)
       .then(res => {
         setbisgData(res.data);
-        console.log(res.data);
+        // console.log("bisgData has been updated: ", res.data);
       });
-    axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
-      .then(res => {
-        console.log(res.data);
-      });
+      await axios.get(`http://localhost:5000/zrp?first_name=${allValues.first_name}&middle_name=${allValues.middle_name}&last_name=${allValues.last_name}&gender=${allValues.gender}&age=${allValues.age}&street_address=${allValues.street_address}&city=${allValues.city}&state=${allValues.state}&zipcode=${allValues.zipcode}`)
+        .then(res => {
+          setzrpData(res.data);
+          // console.log("zrpData has been updated: ", res.data);
+        });
+    }
+
     setLoading(false);
   }
 
   return (
     <div className="App">
       <MainNavBar />
-
-      <h1>Zest Race Predictor</h1>
-      <br />
       <Description />
-      <hr style={{
-        width: "50%"
-      }}></hr>
-      < form onSubmit={handleSubmit} >
-      <label> Please enter your information: </label>
-      <br /> <br />
-      First name: <input type="text" name="first_name" onChange={changeHandler} /> <br /> <br />
-      Middle name: <input type="text" name="middle_name" onChange={changeHandler} /> <br /> <br />
-      Last name: <input type="text" name="last_name" onChange={changeHandler} /> <br /> <br />
-      Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br />
-      Age: <input type="text" name="age" onChange={changeHandler} /> <br /> <br />
-      Street address: <input type="text" name="street_address" onChange={changeHandler} /> <br /> <br />
-      City: <input type="text" name="city" onChange={changeHandler} /> <br /> <br />
-      State: <input type="text" name="state" onChange={changeHandler} /> <br /> <br />
-      Zip code: <input type="text" name="zipcode" onChange={changeHandler} /> <br /> <br />
-      <Button type="submit" value="Submit">Submit</Button>
+
+      <form onSubmit={handleSubmit}>
+        <label> Please enter your information: </label>
+        <br /> <br />
+        First name: <input type="text" name="first_name" onChange={changeHandler} /> <br /> <br />
+        Middle name: <input type="text" name="middle_name" onChange={changeHandler} /> <br /> <br />
+        Last name: <input type="text" name="last_name" onChange={changeHandler} /> <br /> <br />
+        {/* Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br /> */}
+        Gender: 
+        <select type="text" name="gender" onChange={changeHandler}>
+          <option value="U">U</option>
+          <option value="M">M</option>
+          <option value="F">F</option>
+        </select> <br /> <br />
+        Age: <input type="text" name="age" onChange={changeHandler} /> <br /> <br />
+        Street address: <input type="text" name="street_address" onChange={changeHandler} /> <br /> <br />
+        City: <input type="text" name="city" onChange={changeHandler} /> <br /> <br />
+        State:  
+        <select type="text" name="state" onChange={changeHandler}>
+          <option value="FL">FL</option>
+        </select> <br /> <br />
+        Zip code: <input type="text" name="zipcode" onChange={changeHandler} /> <br /> <br />
+        <Button type="submit" value="Submit">Submit</Button>
       </form>
-      <br />
-      {(bisgData == 'default bisg' || loading)
-        ? <div> <p>Nothing here, submit your data!</p> <br /><br /></div>
-        : <div className="svg-class"><h3>Breakdown</h3> <BarGraph white={bisgData.white[0]} black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} multiple={bisgData.multiple[0]} native={bisgData.native[0]} /> </div>
+      <br/>
+      {(!loading && !validAddress)
+        ? <div> <h3> Please input a valid address. </h3></div>
+        : <div> </div>
+      }
+      {(loading) ? <div> <h3>Loading...</h3> </div> : <div></div>}
+      { (bisgData == 'default bisg' || loading || !validAddress)
+        ? <div> <h3> </h3> </div>
+        : <div className="svg-class"><BarGraph white={bisgData.white[0]} 
+          black={bisgData.black[0]} api={bisgData.api[0]} hispanic={bisgData.hispanic[0]} 
+          multiple={bisgData.multiple[0]} native={bisgData.native[0]} zrpWhite={zrpData["White"]}
+          zrpBlack={zrpData["Black"]} zrpApi={zrpData["Asian Pacific Islander"]} zrpHispanic={zrpData["Hispanic"]}
+          zrpMulti={zrpData["Multi"]} zrpNative={zrpData["American Indian"]} /> </div>
       }
       <Footer />
     </div>

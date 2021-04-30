@@ -16,11 +16,12 @@ function MainNavBar() {
                 <div className="logo">
                     <a href="#"><img src={logo}/></a>
                 </div>
-                <div className="nav-wrapper">
+                {/* TODO: Add additional content and pages to the web application */}
+                {/* <div className="nav-wrapper">
                     <ul>
                         <li><a href="#">About</a></li>
                     </ul>
-                </div>
+                </div> */}
             </nav>
         </div>
     )
