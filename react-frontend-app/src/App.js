@@ -107,11 +107,20 @@ function App() {
         First name: <input type="text" name="first_name" onChange={changeHandler} /> <br /> <br />
         Middle name: <input type="text" name="middle_name" onChange={changeHandler} /> <br /> <br />
         Last name: <input type="text" name="last_name" onChange={changeHandler} /> <br /> <br />
-        Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br />
+        {/* Gender: <input type="text" name="gender" onChange={changeHandler} /> <br /> <br /> */}
+        Gender: 
+        <select type="text" name="gender" onChange={changeHandler}>
+          <option value="U">U</option>
+          <option value="M">M</option>
+          <option value="F">F</option>
+        </select> <br /> <br />
         Age: <input type="text" name="age" onChange={changeHandler} /> <br /> <br />
         Street address: <input type="text" name="street_address" onChange={changeHandler} /> <br /> <br />
         City: <input type="text" name="city" onChange={changeHandler} /> <br /> <br />
-        State: <input type="text" name="state" onChange={changeHandler} /> <br /> <br />
+        State:  
+        <select type="text" name="state" onChange={changeHandler}>
+          <option value="FL">FL</option>
+        </select> <br /> <br />
         Zip code: <input type="text" name="zipcode" onChange={changeHandler} /> <br /> <br />
         <Button type="submit" value="Submit">Submit</Button>
       </form>
