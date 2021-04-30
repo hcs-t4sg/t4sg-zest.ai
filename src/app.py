@@ -77,9 +77,10 @@ def internal_zrp():
     county_code = req["result"]["addressMatches"][0]["geographies"]["Census Block Groups"][0]["COUNTY"]
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, 'fl_county_codes.json')
-    special_county_codes = json.load(open(json_url))
-    county_code = special_county_codes[county_code]
-
+    with open(json_url) as f: 
+        special_county_codes = json.load(f)
+        county_code = special_county_codes[county_code]
+    
     congressional_district = req["result"]["addressMatches"][0]["geographies"]["116th Congressional Districts"][0]["CD116"]
     senate_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Upper"][0]["SLDU"]
     house_district = req["result"]["addressMatches"][0]["geographies"]["2018 State Legislative Districts - Lower"][0]["SLDL"]
